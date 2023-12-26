@@ -11,6 +11,9 @@ from passlib.context import CryptContext
 from models import *
 from database import get_bakery_db
 from utils.security import *
+
+from routers import bakery, portfolio
+
 #Setup ENV Vars
 load_dotenv(find_dotenv())
 dashboard_username = os.getenv("DASHBOARD_LOGIN")
@@ -35,6 +38,10 @@ fake_users_db = {
 
 
 app = FastAPI()
+
+app.include_router(bakery.router)
+app.include_router(portfolio.router)
+
 db = get_bakery_db()
 treats = db.treats
 allergens = db.allergens
@@ -88,22 +95,6 @@ async def read_users_me(
     return current_user
 
 
-@app.get("/portfolio")
-async def get_details():
-
-    return {"a":"b"}
 
 
-@app.get("/bakery")
-async def get_bakery_info():
-    return {}
-
-@app.get("/bakery/products")
-async def get_products():
-    return []
-
-
-@app.get("/bakery/products/{productID}")
-async def get_products_by_ID(productID):
-    return {}
 
