@@ -24,8 +24,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 fake_users_db = {
     "johndoe": {
         "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
         "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
         "disabled": False,
     }
@@ -87,14 +85,6 @@ def get_user(db, username: str):
     if username in db:
         user_dict = db[username]
         return UserInDB(**user_dict)
-
-
-def fake_decode_token(token):
-    # This doesn't provide any security at all
-    # Check the next version
-    user = get_user(db, token)
-    return user
-
 
 async def get_current_active_user(
     current_user: Annotated[User, Depends(get_current_user)]
