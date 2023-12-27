@@ -9,7 +9,6 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
 from models import *
-from database import get_bakery_db
 from utils.security import *
 
 from routers import bakery, portfolio
@@ -42,10 +41,6 @@ app = FastAPI()
 app.include_router(bakery.router)
 app.include_router(portfolio.router)
 
-db = get_bakery_db()
-treats = db.treats
-allergens = db.allergens
-orders = db.orders
 
 origins = [
     "http://jadenshek.me",
