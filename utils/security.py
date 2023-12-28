@@ -9,7 +9,7 @@ import os
 
 from fastapi import Depends, HTTPException, status
 from typing import Annotated
-from models import *
+from models.users import *
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

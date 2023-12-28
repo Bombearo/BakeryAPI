@@ -11,3 +11,6 @@ client = MongoClient(connection_string, tlsCAFile=certifi.where())
 
 def get_bakery_db():
     return client.bakery
+
+def get_portfolio_db():
+    return client.portfolio

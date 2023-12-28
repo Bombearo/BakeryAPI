@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from passlib.context import CryptContext
 
-from models import *
+from models.users import *
 from utils.security import *
 
 from routers import bakery, portfolio
