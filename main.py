@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from passlib.context import CryptContext
 
-from models.users import *
+from models.general import *
 from utils.security import *
 
 from routers import bakery, portfolio
@@ -22,8 +22,8 @@ filepath = os.getenv("FOLDER")
 
 
 fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
+    "Admin": {
+        "username": "Admin",
         "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
         "disabled": False,
     },

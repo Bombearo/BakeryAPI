@@ -9,7 +9,7 @@ import os
 
 from fastapi import Depends, HTTPException, status
 from typing import Annotated
-from models.users import *
+from models.general import *
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -22,8 +22,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
+    "Admin": {
+        "username": "Admin",
         "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
         "disabled": False,
     }

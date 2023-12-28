@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from database import get_bakery_db
 from models.bakery_models import TreatModel, Treat
-from models.users import User
+from models.general import User
 from typing import Annotated
 
 from utils.security import get_current_active_user

@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from models.general import MongoModel
 from typing import List
 
 
-class Experience(BaseModel):
+class Experience(MongoModel):
     startYear: str
     endYear: str
     title: str

@@ -1,5 +1,13 @@
-from typing import List
-from pydantic import BaseModel
+from typing import List, Optional
+from pydantic import BaseModel, Field
+
+
+class ObjectId(BaseModel):
+    oid: str
+
+
+class MongoModel(BaseModel):
+    id: Optional[ObjectId] |None = None
 
 
 class User(BaseModel):
