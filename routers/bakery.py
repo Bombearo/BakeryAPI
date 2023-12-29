@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
-from database import get_bakery_db
+from database import get_bakery_db, init_db
 from models.bakery_models import TreatModel, Treat
 from models.general import User
 from typing import Annotated
+from beanie import PydanticObjectId
 
 from utils.security import get_current_active_user
 
@@ -11,7 +12,10 @@ router = APIRouter(
     tags=["bakery"],
 )
 
-db = get_bakery_db()
+@router.on_event("startup")
+async def start_db():
+    client = await init_db()
+    await get_bakery_db(client)
 
 @router.get("/")
 async def get_bakery_info():
@@ -21,21 +25,19 @@ async def get_bakery_info():
             response_description="List all treats",
 )
 async def get_products():
-    treats = db.get_collection("treats")
-    model = TreatModel(treats= treats.find())
-    return model.treats
+    treats = await Treat.find_all().to_list()
+    return treats
 
 
 @router.get("/products/{productID}")
-async def get_products_by_ID(productID):
-    treat =  db.treats.find_one({"_id":productID})
+async def get_products_by_ID(productID:PydanticObjectId):
+    treat = await Treat.get(productID)
     if treat: 
         return treat
     
     raise HTTPException(status_code=404) 
 
-@router.post("/products/addProduct")
+@router.post("/products/")
 async def add_new_product(product: Treat, current_user:Annotated[User,Depends(get_current_active_user)]):
-    print(product)
-    print(current_user.username)
-    pass
+    await product.create()
+    return {"message": "Review added successfully"}

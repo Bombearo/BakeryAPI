@@ -1,12 +1,9 @@
-from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, status
 
 import os
 from dotenv import load_dotenv, find_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-
-from passlib.context import CryptContext
 
 from models.general import *
 from utils.security import *
@@ -59,7 +56,6 @@ app.add_middleware(
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 
 @app.get("/")

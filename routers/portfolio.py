@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.encoders import jsonable_encoder
 
-from database import get_portfolio_db
+from database import get_portfolio_db, init_db
 from utils.security import get_current_active_user
 from models.portfolio_models import Experience
 from models.general import User
@@ -13,7 +13,10 @@ router = APIRouter(
     tags=["portfolio"],
 )
 
-db = get_portfolio_db()
+@router.on_event("startup")
+async def start_db():
+    client = await init_db()
+    await get_portfolio_db(client)
 
 @router.get("/")
 async def get_details():
@@ -27,19 +30,13 @@ async def get_experience():
     """
     GET Request - Retrieves all experience from the MongoDB
     """
-    experience_collection = db.get_collection("experience")
-    a = [experience for experience in experience_collection.find()]
-    print (a)
-    return a
+    data = await Experience.find_all().to_list()
+    return data
 
-@router.post("/experience",
-             response_model=Experience)
+@router.post("/experience", response_description="Experience added to the Database")
 async def add_experience(experience: Experience, current_user:Annotated[User, Depends(get_current_active_user)]):
-
-    experience = jsonable_encoder(experience)
     if current_user.username == "Admin":
-        new_experience = db.experience.insert_one(experience)
-        created = db.experience.find_one({"_id":new_experience.inserted_id})
+        await experience.create()
 
-        return created
+        return {"message": "Review added successfully"}
     return {}

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List
+from beanie import Document
 
 
 class Ingredient(BaseModel):
@@ -8,9 +9,12 @@ class Ingredient(BaseModel):
     price_per_gram: float
 
 
-class Treat(BaseModel):
+class Treat(Document):
     name: str
     ingredients: List[Ingredient] | None = None
+
+    class Settings:
+        name = "treats"
 
 
 class TreatModel(BaseModel):
